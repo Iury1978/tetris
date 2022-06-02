@@ -1,4 +1,4 @@
-const SIZE_BLOCK = 30;
+const SIZE_BLOCK = 20;
 
 //  механика игры
 
@@ -26,22 +26,56 @@ const game = {
     ["o", "o", "o", "o", "x", "x", "o", "o", "x", "x"],
   ],
 
-  activeTetromino() {
+  activeTetromino: {
+    x: 3,
+    y: 0,
     block: [
       ["o", "x", "o"],
       ["o", "x", "o"],
-      ["o", "x", "x"],
-    ];
+      ["x", "x", "o"],
+    ],
   },
 
-  moveLeft() {},
+  activeTetromino: {
+    x: 3,
+    y: 0,
+    block: [
+      ["o", "x", "o"],
+      ["o", "x", "o"],
+      ["x", "x", "o"],
+    ],
+  },
 
-  moveRight() {},
+  moveLeft() {
+    this.activeTetromino.x -= 1;
+  },
 
-  moveDown() {},
+  moveRight() {
+    this.activeTetromino.x += 1;
+  },
+
+  moveDown() {
+    this.activeTetromino.y += 1;
+  },
 
   rotateTetromino() {},
+
+  get viewArea() {
+    const area = JSON.parse(JSON.stringify(this.area));
+    const { x, y, block } = this.activeTetromino;
+    for (let i = 0; i < block.length; i++) {
+      const row = block[i];
+
+      for (let j = 0; j < row.length; j++) {
+        if (row[j] === "x") {
+          area[y + i][x + j] = block[i][j];
+        }
+      }
+    }
+    return area;
+  },
 };
+// game.viewArea();
 
 //  отрисовка
 const container = document.querySelector(".container");
@@ -82,4 +116,4 @@ const showArea = (area) => {
   }
 };
 
-showArea(game.area);
+showArea(game.viewArea);
