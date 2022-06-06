@@ -19,43 +19,37 @@ export class Game {
     ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
     ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
     ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
-    ["o", "o", "o", "o", "x", "o", "o", "o", "o", "o"],
-    ["o", "o", "o", "o", "x", "x", "o", "o", "o", "o"],
-    ["o", "o", "o", "o", "x", "o", "o", "o", "o", "o"],
+    ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
+    ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
+    ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
   ];
+  // формируем 2 фигуры.
+  activeTetromino = this.createTetramino();
 
-  activeTetromino = {
-    x: 3,
-    y: 0,
-    block: [
-      ["o", "x", "o"],
-      ["o", "x", "o"],
-      ["x", "x", "o"],
-    ],
-    rotationIndex: 0,
-    rotation: [
-      [
-        ["o", "x", "o"],
-        ["o", "x", "o"],
-        ["x", "x", "o"],
-      ],
-      [
-        ["x", "o", "o"],
-        ["x", "x", "x"],
-        ["o", "o", "o"],
-      ],
-      [
-        ["o", "x", "x"],
-        ["o", "x", "o"],
-        ["o", "x", "o"],
-      ],
-      [
-        ["o", "o", "o"],
-        ["x", "x", "x"],
-        ["o", "o", "x"],
-      ],
-    ],
-  };
+  nextTetramino = this.createTetramino();
+
+  //  создаю рэндомную фигуру из базы
+  createTetramino() {
+    const keys = Object.keys(tetrominoes);
+    const letterTetromino = keys[Math.floor(Math.random() * keys.length)];
+    const rotation = tetrominoes[letterTetromino];
+    // фигура появляется в рэндомном положении
+    const rotationIndex = Math.floor(Math.random() * rotation.length);
+    const block = rotation[rotationIndex];
+
+    return {
+      block,
+      rotationIndex,
+      rotation,
+      x: 3,
+      y: 0,
+    };
+  }
+  //  в этом методе меняю ективную на следующуа, а  следующую создаю по новой.
+  changeTetramino() {
+    this.activeTetromino = this.nextTetramino;
+    this.nextTetramino = this.createTetramino;
+  }
 
   moveLeft() {
     if (
@@ -150,5 +144,6 @@ export class Game {
         }
       }
     }
+    this.changeTetramino();
   }
 }

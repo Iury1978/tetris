@@ -1,7 +1,9 @@
 import { Game } from "./modules/game.js";
 
 const game = new Game();
-console.log("game:", game);
+
+game.createTetramino();
+
 const SIZE_BLOCK = 20;
 const COLUMNS = 10;
 const ROWS = 20;
@@ -10,6 +12,16 @@ const ROWS = 20;
 
 //  отрисовка
 const container = document.querySelector(".container");
+
+const colors = {
+  J: "FireBrick",
+  I: "blue",
+  O: "gold",
+  L: "green",
+  2: "indigo",
+  T: "RoyalBlue",
+  S: "MediumSeaGreen",
+};
 
 const canvas = document.createElement("canvas");
 container.append(canvas);
@@ -29,7 +41,7 @@ const showArea = (area) => {
     for (let x = 0; x < line.length; x++) {
       const block = line[x];
       if (block !== "o") {
-        context.fillStyle = "tomato";
+        context.fillStyle = colors[block];
         context.strokeStyle = "white";
         context.fillRect(
           x * SIZE_BLOCK,
